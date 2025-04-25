@@ -7,6 +7,15 @@
   <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
+  <script>
+    // Check if the URL path matches a paste ID and redirect
+    const path = window.location.pathname.slice(1); // Remove the leading '/'
+    if (path && !path.includes("index.html")) {
+      // Redirect to paste.html?id=<id>
+      window.location.href = `${window.location.origin}/paste.html?id=${path}`;
+    }
+  </script>
+
   <h1>Copy Paste</h1>
   <form id="pasteForm">
     <textarea id="pasteContent" placeholder="Enter your text/code here..." rows="10"></textarea><br>
