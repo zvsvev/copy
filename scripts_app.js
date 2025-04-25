@@ -13,8 +13,10 @@ document.getElementById("pasteForm").addEventListener("submit", function (e) {
   // Store the paste in localStorage (or integrate with an external backend)
   localStorage.setItem(`paste_${pasteId}`, content);
 
+  // Generate the correct link to the paste
+  const pasteLink = `${window.location.origin}/copy/paste.html?id=${pasteId}`; // Adjusted for subdirectory
+
   // Display the link to the paste
-  const pasteLink = `${window.location.origin}/paste.html?id=${pasteId}`;
   document.getElementById("pasteLink").innerHTML = `
     <p>Copasnya udh jadi bang: <a href="${pasteLink}" target="_blank">${pasteLink}</a></p>
   `;
