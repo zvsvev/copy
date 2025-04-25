@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lihat Paste</title>
+  <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+  <h1>Lihat Paste</h1>
+  <pre id="pasteContent"></pre>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const pasteId = urlParams.get("id");
+
+    if (pasteId) {
+      const content = localStorage.getItem(`paste_${pasteId}`);
+      if (content) {
+        document.getElementById("pasteContent").textContent = content;
+      } else {
+        document.getElementById("pasteContent").textContent = "Paste not found!";
+      }
+    } else {
+      document.getElementById("pasteContent").textContent = "Invalid paste ID!";
+    }
+  </script>
+</body>
+</html>
