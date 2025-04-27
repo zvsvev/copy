@@ -7,27 +7,29 @@ document.getElementById("pasteForm").addEventListener("submit", function (e) {
     return;
   }
 
-  // Generate a unique ID for the paste
-  const pasteId = Date.now().toString(36);
+  // Send to backend server
+  fetch('https://copy-backend-88oj.onrender.com/api/paste', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: content })
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Assuming backend responds with { url: "..." }
+    const pasteLink = data.url;
 
-  // Store the paste in localStorage
-  try {
-    localStorage.setItem(`paste_${pasteId}`, content);
-  } catch (error) {
-    console.error("Error saving to localStorage:", error);
-    alert("Failed to save your paste. Please check your browser settings.");
-    return;
-  }
+    // Display the generated link
+    const linkElement = document.getElementById("pasteLink");
+    linkElement.innerHTML = `
+      <p>Copasnya udh jadi bang: <a href="${pasteLink}" target="_blank">${pasteLink}</a></p>
+    `;
 
-  // Generate the paste link in the desired format
-  const pasteLink = `${window.location.origin}/${pasteId}`;
+    // Optionally, clear the textarea
+    document.getElementById("pasteContent").value = "";
+  })
+  .catch(error => {
+    console.error('Error saving paste:', error);
+    alert('Gagal upload paste, coba lagi bang.');
+  });
 
-  // Display the generated link
-  const linkElement = document.getElementById("pasteLink");
-  linkElement.innerHTML = `
-    <p>Copasnya udh jadi bang: <a href="${pasteLink}" target="_blank">${pasteLink}</a></p>
-  `;
-
-  // Optionally, clear the textarea
-  document.getElementById("pasteContent").value = "";
 });
