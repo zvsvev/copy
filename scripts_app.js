@@ -7,7 +7,6 @@ document.getElementById("pasteForm").addEventListener("submit", function (e) {
     return;
   }
 
-  // Send to backend server
   fetch('https://copy-backend-88oj.onrender.com/api/paste', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -15,21 +14,18 @@ document.getElementById("pasteForm").addEventListener("submit", function (e) {
   })
   .then(response => response.json())
   .then(data => {
-    // Assuming backend responds with { url: "..." }
-    const pasteLink = data.url;
-
-    // Display the generated link
-    const linkElement = document.getElementById("pasteLink");
-    linkElement.innerHTML = `
-      <p>Copasnya udh jadi bang: <a href="${pasteLink}" target="_blank">${pasteLink}</a></p>
-    `;
-
-    // Optionally, clear the textarea
-    document.getElementById("pasteContent").value = "";
+    if (data.url) {
+      const linkElement = document.getElementById("pasteLink");
+      linkElement.innerHTML = `
+        <p>Copasnya udh jadi bang: <a href="${data.url}" target="_blank">${data.url}</a></p>
+      `;
+      document.getElementById("pasteContent").value = "";
+    } else {
+      alert('Server tidak mengembalikan link.');
+    }
   })
   .catch(error => {
-    console.error('Error saving paste:', error);
-    alert('Gagal upload paste, coba lagi bang.');
+    console.error('Error saat fetch:', error);
+    alert('Gagal konek ke server.');
   });
-
 });
